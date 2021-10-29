@@ -1,0 +1,14 @@
+#!/usr/local/bin/python3
+
+import base64
+import json
+import subprocess
+
+import sys
+
+from kubectl import KubeCtl
+
+k = KubeCtl()
+
+print(k.list_pods())
+

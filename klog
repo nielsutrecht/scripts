@@ -1,0 +1,48 @@
+#!/usr/local/bin/python3
+
+import base64
+import json
+import subprocess
+
+import sys
+
+
+def read_command(command):
+    result = subprocess.run(command.split(), stdout=subprocess.PIPE)
+    return result.stdout.decode('utf-8')
+
+def print_command(command):
+    subprocess.Popen([command], shell=True).wait()
+def list_pods():
+    text = read_command("kubectl get pods -o name")
+    return list(map(lambda it: it.split('/')[1], text.splitlines()))
+
+def find_pod(name):
+    return list(filter(lambda p: p.startswith(name), list_pods()))
+
+def print_pods(pods):
+    for p in pods:
+        print(p)
+
+def print_logs(pod):
+    print_command("kubectl logs " + pod + " lee-svc")
+
+def main(argv):
+    if len(argv) == 1:
+        print_pods(list_pods())
+    elif len(argv) >= 2:
+        found = find_pod(argv[1])
+        if len(found) == 0:
+            print("No pods found with name that contains " + argv[1])
+        elif len(found) > 1:
+            print_pods(found)
+        else:
+            print_logs(found[0])
+    elif len(argv) == 3:
+        print(read_secret_key(argv[1], argv[2]), end='')
+    else:
+        println("Expected 0-2 arguments")
+
+
+if __name__ == "__main__":
+    main(sys.argv)
