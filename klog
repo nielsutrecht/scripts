@@ -1,4 +1,4 @@
-#!/usr/local/bin/python3
+#!/usr/bin/env python3
 
 import base64
 import json
@@ -11,21 +11,28 @@ def read_command(command):
     result = subprocess.run(command.split(), stdout=subprocess.PIPE)
     return result.stdout.decode('utf-8')
 
+
 def print_command(command):
     subprocess.Popen([command], shell=True).wait()
+
+
 def list_pods():
     text = read_command("kubectl get pods -o name")
     return list(map(lambda it: it.split('/')[1], text.splitlines()))
 
+
 def find_pod(name):
     return list(filter(lambda p: p.startswith(name), list_pods()))
+
 
 def print_pods(pods):
     for p in pods:
         print(p)
 
+
 def print_logs(pod):
     print_command("kubectl logs " + pod + " lee-svc")
+
 
 def main(argv):
     if len(argv) == 1:
