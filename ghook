@@ -89,7 +89,7 @@ def main(argv):
         check-branch    - Checks if the commit message contains the issue number based on current branch
         
     Examples:
-        ghook expect-branch "^([A-Z]{1,10}-[0-9]{1,6})"
+        ghook expect-branch "^[A-Z]{1,10}-[0-9]{1,6}"
         ghook insert-branch /path/to/message "^([A-Z]{1,10}-[0-9]{1,6})"
         ghook check-message /path/to/message "^[A-Z]{1,10}-[0-9]{1,6}$"
         ghook check-branch /path/to/message "^([A-Z]{1,10}-[0-9]{1,6})"
